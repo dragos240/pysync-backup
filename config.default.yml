@@ -1,0 +1,26 @@
+# files and directories
+src_dir: /
+dst_dir: /mnt/backup
+excluded:
+    - "/dev/*"
+    - "/proc/*"
+    - "/sys/*"
+    - "/tmp/*"
+    - "/run/*"
+    - "/mnt/*"
+    - "/media/*"
+    - "/lost+found"
+daily_dir: daily
+weekly_dir: weekly
+monthly_dir: monthly
+last_file: .last
+log_path: ./backup.log
+
+# rsync args
+rsync_args:
+    - "-aAXv"
+    - "--delete"
+    - "--info=progress2"
+
+# pysync settings
+ignore_mountpoint_warning: false
