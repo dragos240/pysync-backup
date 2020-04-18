@@ -1,4 +1,4 @@
-![](https://github.com/dragos240/pysync-backup/raw/develop/imgs/logo.svg)
+![](imgs/logo.png)
 
 # PySync-backup
 
