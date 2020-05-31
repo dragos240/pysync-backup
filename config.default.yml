@@ -1,15 +1,17 @@
-# files and directories
+# Source/Destination directories
 src_dir: /
 dst_dir: /mnt/backup
+# Paths to exclude. Please note that excluded paths are RELATIVE to src_dir
+# if you plan to use absolute paths, set absolute_paths to true
 excluded:
-    - "/dev/*"
-    - "/proc/*"
-    - "/sys/*"
-    - "/tmp/*"
-    - "/run/*"
-    - "/mnt/*"
-    - "/media/*"
-    - "/lost+found"
+    - "dev/*"
+    - "proc/*"
+    - "sys/*"
+    - "tmp/*"
+    - "run/*"
+    - "mnt/*"
+    - "media/*"
+    - "lost+found"
 daily_dir: daily
 weekly_dir: weekly
 monthly_dir: monthly
@@ -24,3 +26,4 @@ rsync_args:
 
 # pysync settings
 ignore_mountpoint_warning: false
+absolute_paths: false

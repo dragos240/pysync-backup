@@ -18,17 +18,15 @@ pip3 install --user pyyaml
 (Note: You are welcome to remove the `--user` flag, but by doing so, you install to your system directoriess, which is not reccomended.)
 
 ## Configuration
-PySync-backup can be configured by copying the `config.default.yml` file to one named `config.yml`. Please edit it to your liking and feel free to remove any lines you don't want changed from the defaults. PySync-backup reads the default file first and reads your custom file second, allowing you to clean up your config file as you wish.
+PySync-backup can be configured by copying the `config.default.yml` file to one named `config.yml`. Please edit it to match your setup.
 
 ## Running
 It's easy to run PySync-backup. Just run the `backup.py` script with:
-
 ```
 ./backup.py
 ```
 
 Or alternatively:
-
 ```
 python3 backup.py
 ```
