@@ -13,8 +13,8 @@ RSYNC_CMD = "rsync"
 
 
 class Config:
-    def __init__(self):
-        with open("config.yml", "r") as f:
+    def __init__(self, config_path):
+        with open(config_path, "r") as f:
             self.config = yaml.load(f.read(), Loader=yaml.FullLoader)
             # Normalize path for later use
             self.config["src_dir"] = path.normpath(self.config["src_dir"])
@@ -97,8 +97,6 @@ class BackupController:
                 ret = self.backup(period)
                 if ret is None:
                     return
-
-                self.update_last_file(self.config.get_last_path(period))
         except KeyboardInterrupt:
             pass
         except PermissionError as e:
@@ -133,12 +131,15 @@ class BackupController:
         except KeyboardInterrupt:
             print("Interrupt received, exiting...")
 
+        self.config.get_last_path(period)
+
         return ret
 
-    def update_last_file(last_path):
+    def update_last_file(self, period):
+        last_path = self.config.get_last_path(period)
         Path(last_path).touch()
 
-    def check_last_modified(last_path):
+    def check_last_modified(self, last_path):
         try:
             st = stat(last_path)
         except FileNotFoundError:
@@ -151,20 +152,6 @@ class BackupController:
 
 
 def main():
-    try:
-        config = Config()
-    except FileNotFoundError:
-        print("Please copy create a config.json first.")
-        return
-    except KeyError as e:
-        print("Could not find key", e)
-        return
-
-    if not config.ignore_mountpoint_warning \
-            and not path.ismount(config.dst_dir):
-        print("Destination dir is not a mountpoint, closing")
-        return
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--period", "-p",
                         choices=['monthly', 'daily', 'weekly'],
@@ -176,8 +163,25 @@ def main():
                         help="Perform a dry run only printing the commands "
                         + "that would be executed.",
                         default=False)
+    parser.add_argument('--config', '-c',
+                        help="Specify an alternate config file path.",
+                        default="./config.yml")
 
     args = parser.parse_args()
+
+    try:
+        config = Config(args.config)
+    except FileNotFoundError:
+        print("Please copy create a config.json first.")
+        return
+    except KeyError as e:
+        print("Could not find key", e)
+        return
+
+    if not config.ignore_mountpoint_warning \
+            and not path.ismount(config.dst_dir):
+        print("Destination dir is not a mountpoint, closing")
+        return
 
     controller = BackupController(config, args)
     controller.run()
