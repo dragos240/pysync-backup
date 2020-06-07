@@ -16,7 +16,7 @@ daily_dir: daily
 weekly_dir: weekly
 monthly_dir: monthly
 last_file: .last
-log_path: ./backup.log
+log_path: /tmp/backup.log
 
 # rsync args
 rsync_args:

@@ -3,7 +3,7 @@
 # PySync-backup
 
 ## What is it?
-PySync-backup is a incremental backup solution written in Python using the rsync utility. It is meant to be used in cron, but can be run individually if you like.
+PySync-backup is a incremental backup solution written in Python using the rsync utility. It is meant to be used in cron, but can be run on its own if you like.
 
 ## How does it work?
 PySync-backup creates `monthly`, `daily`, and `weekly` folders in your destination path and backs your source directory (`/` with exclusions by default) to each depending on when the last successful backup had been performed.

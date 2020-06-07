@@ -32,7 +32,7 @@ class Config:
             period_path = path.join(self.dst_dir, self.monthly_dir)
         elif period == "daily":
             period_path = path.join(self.dst_dir, self.daily_dir)
-            if not path.exists(period_path):
+            if not path.exists(path.join(period_path, self.last_file)):
                 link_dst = path.join(self.dst_dir, self.monthly_dir)
         elif period == "weekly":
             period_path = path.join(self.dst_dir, self.weekly_dir)
@@ -104,13 +104,13 @@ class BackupController:
 
     def backup(self, period):
         rsync_all = self.config.rsync_all
-        period_path, link_dst = self.config.get_paths(self.period)
+        period_path, link_dst = self.config.get_paths(period)
         if link_dst is not None:
             rsync_all.append("--link-dest=" + link_dst)
         rsync_all.extend([self.config.src_dir, period_path])
         print("Runnning: " + " ".join(rsync_all))
         if self.dry_run:
-            return None
+            return 0
 
         """
         if backup is monthly, do a full backup
@@ -131,7 +131,7 @@ class BackupController:
         except KeyboardInterrupt:
             print("Interrupt received, exiting...")
 
-        self.config.get_last_path(period)
+        self.update_last_file(period)
 
         return ret
 
